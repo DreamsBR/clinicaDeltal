@@ -1,0 +1,9 @@
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Asegura que el encabezado se mantenga sobre otros elementos */
+    background-color: #fff; /* O el color de fondo de tu encabezado */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Opcional: añade una sombra para un efecto elevado */
+}
+

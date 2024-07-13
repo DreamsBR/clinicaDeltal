@@ -1,0 +1,143 @@
+<div class="bg-white w-10/12 h-96 m-7">
+    <div class="text-center">
+        <h1 class="font-sans p-3">INGRESA TUS DATOS</h1>
+    </div>
+
+    <mat-horizontal-stepper [linear]="isLinear" #stepper>
+        <mat-step [stepControl]="firstFormGroup">
+            <div class="pt-4">
+                <form [formGroup]="firstFormGroup">
+                    <ng-template matStepLabel>Personales</ng-template>
+                    <div style="display: flex; flex-direction: column;">
+                        <mat-form-field>
+                            <mat-label>Nombres</mat-label>
+                            <input matInput placeholder="Nombres" formControlName="nombre" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Apellidos</mat-label>
+                            <input matInput placeholder="Apellidos" formControlName="apellido" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>DNI</mat-label>
+                            <input matInput placeholder="DNI" type="text" formControlName="numDni" required>
+                        </mat-form-field>
+                        <div>
+                            <button class="bg-blue-500 hover:bg-blue-300"  mat-button matStepperNext>
+                                <a class="text-white">Siguiente</a>
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup" label="Contactos">
+            <div class="pt-4">
+
+                <form [formGroup]="secondFormGroup">
+                    <div style="display: flex; flex-direction: column;">
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Numero</mat-label>
+                            <input matInput #postalCode maxlength="9" placeholder="Numero celular"
+                                formControlName="numCel">
+                            <mat-hint align="end">{{postalCode.value.length}} / 9</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Correo Electronico</mat-label>
+                            <input matInput formControlName="correo" placeholder="Correo Electronico" required>
+                        </mat-form-field>
+                        <div>
+                            <button mat-button matStepperPrevious class="bg-red-500 hover:bg-red-300 mr-2"
+                                style="color: white;">Atras</button>
+                            <button (click)="createNewCita()" mat-button matStepperNext
+                                class="bg-blue-500 hover:bg-blue-300">
+                                <a class="text-white">Siguiente</a>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </mat-step>
+        <mat-step [stepControl]="threeFormGroup" label="Servicios">
+            <div class="pt-4">
+
+                <form [formGroup]="threeFormGroup">
+                    <div style="display: flex; flex-direction: column;">
+                        <mat-form-field>
+                            <mat-label>Seleccione Servicios</mat-label>
+                            <mat-select formControlName="services">
+                                @for (food of medicosList; track food) {
+                                <mat-option [value]="food.conact">{{food.nombre}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Seleccion Medico</mat-label>
+                            <mat-select formControlName="doctor">
+                                @for (food of medicosList; track food) {
+                                <mat-option [value]="food._links">{{food.apellido +' '+food.nombre}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div>
+                            <button mat-button matStepperPrevious class="bg-red-500 hover:bg-red-300 mr-2"
+                                style="color: white;">Atras</button>
+                            <button (click)="listarHorarios()" mat-button matStepperNext
+                                class="bg-blue-500 hover:bg-blue-300">
+                                <a class="text-white">Siguiente</a>
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </mat-step>
+
+        <mat-step [stepControl]="fourFormGroup" label="Horario">
+            <div class="pt-4">
+
+                <form [formGroup]="fourFormGroup">
+                    <div style="display: flex; flex-direction: column;">
+                        <mat-form-field>
+                            <mat-label>Seleccione Servicios</mat-label>
+                            <mat-select formControlName="times">
+                                @for (food of horariosList; track food) {
+                                <mat-option [value]="food.nombre">{{food.nombre}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                        <div>
+                            <button mat-button matStepperPrevious class="bg-red-500 hover:bg-red-300 mr-2"
+                                style="color: white;">Atras</button>
+                            <button (click)="GuardarCita()" mat-button matStepperNext
+                                class="bg-blue-500 hover:bg-blue-300">
+                                <a class="text-white">Siguiente</a>
+
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </mat-step>
+
+
+        <mat-step>
+            <ng-template matStepLabel>Confirmación</ng-template>
+            <div class="pt-3">
+                @defer (on viewport) {
+                @defer(on timer(3000)){
+                <span>On Interaction</span>
+                <span [hidden]="jumpData()"></span>
+                }@placeholder {
+                <h1 class="text-gray-700">Guardado datos</h1>
+                <mat-spinner></mat-spinner>
+                }
+                }@placeholder {
+                <h1></h1>
+                }
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>

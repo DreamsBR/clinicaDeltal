@@ -1,0 +1,71 @@
+<app-side-menu-cita />
+<section class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+  <img class="w-[100%]" src="../../../../assets/img-conent/resumen/resumen.png" />
+
+  <div>
+    <div class="justify-center text-center mt-6 mb-4">
+      <h1 class="font-sans text-3xl">Resumen de tu cita</h1>
+    </div>
+
+    @for (paciente of pacienteLink; track $index) {
+    <div>
+      <h2 class="mx-2 font-sans">Nombre</h2>
+      <input class="w-[95%] h-10 pl-3 mx-2 rounded-md border-2 border-gray-400" type="text" value="{{paciente.nombre}}"
+        readonly>
+    </div>
+    <div>
+      <h2 class="mx-2 font-sans">Apellidos</h2>
+      <input class="w-[95%] h-10 pl-3 mx-2 rounded-md border-2 border-gray-400" type="text" value="{{paciente.apellido}}"
+        readonly>
+    </div>
+    <div>
+      <h2 class="mx-2 font-sans">DNI</h2>
+      <input class="w-[95%] h-10 pl-3 mx-2 rounded-md border-2 border-gray-400" type="text" value="{{paciente.numDni}}"
+        readonly>
+    </div>
+    <div>
+      <h2 class="mx-2 font-sans">Número de Contacto</h2>
+      <input class="w-[95%] h-10 pl-3 mx-2 rounded-md border-2 border-gray-400" type="text" value="{{paciente.numCel}}"
+        readonly>
+    </div>
+    <div>
+      <h2 class="mx-2 font-sans">Correo Electrónico</h2>
+      <input class="w-[95%] h-10 pl-3 mx-2 rounded-md border-2 border-gray-400" type="text" value="{{paciente.correo}}"
+        readonly>
+    </div>
+    }
+
+    @for (item of doctorLink; track $index) {
+    <div>
+      <h2 class="mx-2 font-sans">Doctor(a)</h2>
+      <input class="w-[95%] h-10 pl-3 mx-2 rounded-md border-2 border-gray-400" type="text"
+        value="DR. {{item.nombre}} {{item.apellido}}" readonly>
+    </div>
+    }
+
+    @for (item of citasList; track $index) {
+    <div>
+      <h2 class="mx-2 font-sans">Fecha</h2>
+      <input class="w-[95%] h-10 pl-3 mx-2 rounded-md border-2 border-gray-400" type="text" value="{{item.fecha}}"
+        readonly>
+    </div>
+    <div>
+      <h2 class="mx-2 font-sans">Estado</h2>
+      <input class="w-[95%] h-10 pl-3 mx-2 rounded-md border-2 border-gray-400" type="text" value="{{item.estado}}"
+        readonly>
+    </div>
+    }
+  </div>
+</section>
+
+
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+  <div class="justify-center text-center">
+
+    <h1 class="font-sans text-3xl">Tu sonrisa en manos de los mejores</h1>
+    <h1 class="font-sans text-green-600 text-3xl"> dentistas en Lima</h1>
+  </div>
+</section>
+
+<app-footer-pages />

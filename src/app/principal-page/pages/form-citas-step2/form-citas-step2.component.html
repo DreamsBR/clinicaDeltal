@@ -22,7 +22,7 @@
                             <input matInput placeholder="DNI" type="text" formControlName="numDni" required>
                         </mat-form-field>
                         <div>
-                            <button class="bg-blue-500 hover:bg-blue-300"  mat-button matStepperNext>
+                            <button class="bg-blue-500 hover:bg-blue-300" mat-button matStepperNext>
                                 <a class="text-white">Siguiente</a>
                             </button>
                         </div>
@@ -38,7 +38,7 @@
                     <div style="display: flex; flex-direction: column;">
 
                         <mat-form-field class="example-full-width">
-                            <mat-label>Numero</mat-label>
+                            <mat-label>Numero Celular</mat-label>
                             <input matInput #postalCode maxlength="9" placeholder="Numero celular"
                                 formControlName="numCel">
                             <mat-hint align="end">{{postalCode.value.length}} / 9</mat-hint>
@@ -64,6 +64,8 @@
 
                 <form [formGroup]="threeFormGroup">
                     <div style="display: flex; flex-direction: column;">
+
+
                         <mat-form-field>
                             <mat-label>Seleccione Servicios</mat-label>
                             <mat-select formControlName="services">
@@ -76,7 +78,7 @@
                             <mat-label>Seleccion Medico</mat-label>
                             <mat-select formControlName="doctor">
                                 @for (food of medicosList; track food) {
-                                <mat-option [value]="food._links">{{food.apellido +' '+food.nombre}}</mat-option>
+                                <mat-option [value]="food._links">Dr. {{food.apellido +' '+food.nombre}}</mat-option>
                                 }
                             </mat-select>
                         </mat-form-field>
@@ -100,8 +102,17 @@
 
                 <form [formGroup]="fourFormGroup">
                     <div style="display: flex; flex-direction: column;">
+
                         <mat-form-field>
-                            <mat-label>Seleccione Servicios</mat-label>
+                            <mat-label>Selecciona Fecha</mat-label>
+                            <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="dates">
+                            <mat-hint>Día/Mes/Año</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Seleccione Horarios</mat-label>
                             <mat-select formControlName="times">
                                 @for (food of horariosList; track food) {
                                 <mat-option [value]="food.nombre">{{food.nombre}}</mat-option>

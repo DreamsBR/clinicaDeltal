@@ -29,4 +29,14 @@ export class CitasServicesService {
         console.log('Email enviado:', result);
       });
   }
+
+  getDentalServices() {
+    return [
+      { id: 1, name: 'Limpieza dental' },
+      { id: 2, name: 'Blanqueamiento dental' },
+      { id: 3, name: 'Ortodoncia' },
+      { id: 4, name: 'Endodoncia' },
+      { id: 5, name: 'Implantes dentales' },
+    ];
+  }
 }

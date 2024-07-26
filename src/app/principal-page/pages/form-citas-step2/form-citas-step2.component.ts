@@ -13,7 +13,7 @@ import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ResumenCitaComponent } from '../resumen-cita/resumen-cita.component';
@@ -26,6 +26,21 @@ import { CitasInterface } from '../../../interfaces/CitasInterface';
 import { HorariosInterface } from '../../../interfaces/HorariosInterface';
 import { FormCitasComponent } from '../form-citas/form-citas.component';
 import { SharedDataService } from '../../../services/SharedData.service';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { format } from 'date-fns';
+const MY_DATE_FORMAT = {
+  parse: {
+    dateInput: 'DD/MM/YYYY', // this is how your date will be parsed from Input
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY', // this is how your date will get displayed on the Input
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  }
+};
 
 @Component({
   selector: 'app-form-citas-step2',
@@ -43,21 +58,32 @@ import { SharedDataService } from '../../../services/SharedData.service';
     ResumenCitaComponent,
     FormCitasComponent,
     ResumenCitaComponent,
+    MatDatepickerModule,
+  ],
+  providers: [
+    { provide: DateAdapter, useClass: MomentDateAdapter , deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMAT }
   ],
   templateUrl: './form-citas-step2.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
+
+
+
 export class FormCitasStep2Component {
   @Output() citasListChange = new EventEmitter<CitasInterface[]>();
-
+  form!: FormGroup;
   citasList: CitasInterface[] = [];
 
-  isLinear = false;
+  isLinear = true;
   medicosList: MedicoInterface[] = [];
   horariosList: HorariosInterface[] = [];
   pacianteLinks: string | undefined;
   doctorsLinks: string | undefined;
   hoursLinks: string | undefined;
+
+  minDate = new Date();
 
   constructor(
     private sharedData: SharedDataService,
@@ -100,6 +126,7 @@ export class FormCitasStep2Component {
   });
   fourFormGroup = this._formBuilder.group({
     times: ['', Validators.required],
+    dates: ['', Validators.required],
   });
 
   jumpData() {
@@ -134,14 +161,17 @@ export class FormCitasStep2Component {
       //console.log('Ruta paciente', this.pacianteLinks?.toString());
     });
   }
-  pacienteProfileId: string = "";
+  pacienteProfileId: string = '';
 
-  citaCode: string = "";
+  citaCode: string = '';
   GuardarCita() {
     this.listDoctors();
     this.createNewCita();
+    const fechaRaw = this.fourFormGroup.value.dates ?? "";
+    const fechaFormateada = format(new Date(fechaRaw), 'dd/MM/yyyy');
+
     const citas: CitasInterface = {
-      fecha: this.fourFormGroup.value.times || undefined,
+      fecha: fechaFormateada +' - '+ this.fourFormGroup.value.times,
       paciente: this.pacianteLinks?.toString() || undefined,
       doctor: this.threeFormGroup.value.doctor || undefined,
       estado: 'Creado',
@@ -151,15 +181,14 @@ export class FormCitasStep2Component {
       this.citasList.forEach((cita: any) => {
         this.citaCode = cita._links.cita.href;
         console.log('Cita Code :', this.citaCode);
-        
+
         if (typeof this.citaCode === 'string') {
           this.pacienteProfileId = this.citaCode.split('/api/v1/citas/')[1];
         }
       });
       console.log('pacienteCode :', this.pacienteProfileId);
       //.log('Citas', this.citasList);
-      this.citasService
-        .sendEmailCitas(this.pacienteProfileId);
+      this.citasService.sendEmailCitas(this.pacienteProfileId);
     });
 
     console.log('Data');
